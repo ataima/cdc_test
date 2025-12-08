@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
+#include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -89,6 +90,16 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
+
+  /* Wait for USB enumeration */
+  HAL_Delay(1000);
+
+  /* Send welcome message */
+  uint8_t welcome_msg[] = "\r\n=== STM32 USB CDC Echo Test ===\r\n";
+  uint8_t info_msg[] = "Type anything and it will be echoed back!\r\n\r\n";
+  CDC_Transmit_FS(welcome_msg, strlen((char*)welcome_msg));
+  HAL_Delay(10);
+  CDC_Transmit_FS(info_msg, strlen((char*)info_msg));
 
   /* USER CODE END 2 */
 

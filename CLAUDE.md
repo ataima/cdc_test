@@ -201,9 +201,20 @@ To add or modify peripheral configurations:
 ### Debugging
 
 The project is configured for hardware debugging:
-- SWD (Serial Wire Debug) interface
+- **SWD (Serial Wire Debug) interface** - JTAG is disabled
 - Compatible with ST-Link debuggers
 - Debug configuration: `CDC_test.launch`
+
+**Important:** In STM32CubeIDE debug configuration, ensure the interface is set to **SWD** (not JTAG):
+1. Right-click project → **Debug As → Debug Configurations...**
+2. Select `CDC_test Debug` configuration
+3. Go to **Debugger** tab
+4. Under **Debug probe**, verify:
+   - Debug probe: ST-LINK (ST-LINK GDB server)
+   - Interface: **SWD** ← Must be SWD, not JTAG!
+5. Apply and Debug
+
+Since the firmware uses `__HAL_AFIO_REMAP_SWJ_NOJTAG()`, JTAG pins are released as GPIOs and only SWD remains active. Using JTAG interface in debugger will fail to connect.
 
 ### Critical Constraints
 
